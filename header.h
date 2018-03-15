@@ -15,6 +15,8 @@ int canBreak(int y, int x, int direction);
 int getNextX(int x, int direction);
 int getNextY(int y, int direction);
 int getOppositeDirection(int direction);
+void setIconColor(int R, int G, int B);
+void setDrawIconInBackground(int drawIcon);
 void search(int y, int x, int maxDepth);
 void printResult();
 #include "draw.h"

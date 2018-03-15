@@ -13,7 +13,13 @@ void setTitle(char* title){
 }
 void setColor(int R, int G, int B){
 	fprintf(file, "color %d %d %d\n", R, G, B);
-} 
+}
+void setIconColor(int R, int G, int B){
+	fprintf(file, "iconColor %d %d %d\n", R, G, B);
+}
+void setDrawIconInBackground(int drawIcon) {
+	fprintf(file, "drawIcon %d\n", drawIcon);
+}
 void beginDraw(){
 	file = fopen("drawData.dat", "w"); 
 }
