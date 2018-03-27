@@ -17,7 +17,13 @@ int getNextY(int y, int direction);
 int getOppositeDirection(int direction);
 void setIconColor(int R, int G, int B);
 void setDrawIconInBackground(int drawIcon);
-void search(int y, int x, int maxDepth);
+void search(int y, int x);
+int getMazeData(int y, int x);
 void printResult();
+int ifmove(int y, int x, int direction);
+void mark(int y,int x);
+void findway(int y,int x);
+int getSolvedMazeData(int y, int x);
 #include "draw.h"
 #include "maze.h"
+#include "mazeSolver.h"
