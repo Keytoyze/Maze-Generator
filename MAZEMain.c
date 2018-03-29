@@ -1,4 +1,4 @@
-#include "header.h"
+#include "MAZEHeader.h"
 
 int main(void)
 {

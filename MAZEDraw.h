@@ -33,11 +33,11 @@ void DRAW_SetDrawIconInBackground(int drawIcon)
 }
 void DRAW_BeginDraw()
 {
-	file = fopen("drawData.dat", "w"); 
+	file = fopen("lib\\drawData.dat", "w"); 
 }
 void DRAW_EndDraw()
 {
 	fclose(file);
-	system("win.exe");
+	system("lib\\win.exe");
 }
 

@@ -46,6 +46,6 @@ void SOLVE_CopyMaze();
 int MAIN_GetRandomNumber(int min, int max);
 void MAIN_PrintResult();
 
-#include "draw.h"
-#include "maze.h"
-#include "mazeSolver.h"
+#include "MAZEDraw.h"
+#include "MAZEMaze.h"
+#include "MAZESolve.h"
