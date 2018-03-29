@@ -1,41 +1,41 @@
 FILE* file;
-void drawPoint(int x, int y)
+void DRAW_DrawPoint(int x, int y)
 {
 	fprintf(file, "point %d %d\n", x, y);
 }
-void drawLine(int x1, int y1, int x2, int y2)
+void DRAW_DrawLine(int x1, int y1, int x2, int y2)
 {
 	fprintf(file, "line %d %d %d %d\n", x1, y1, x2, y2);
 }
-void drawCircle(int x, int y, int r)
+void DRAW_DrawCircle(int x, int y, int r)
 {
 	fprintf(file, "circle %d %d %d\n", x, y, r);
 } 
-void setWidthAndHeight(int width, int height)
+void DRAW_SetWidthAndHeight(int width, int height)
 {
 	fprintf(file, "setWidthAndHeight %d %d\n", width, height);
 }
-void setTitle(char* title)
+void DRAW_SetTitle(char* title)
 {
 	fprintf(file, "title %s\n", title);
 }
-void setColor(int R, int G, int B)
+void DRAW_SetColor(int R, int G, int B)
 {
 	fprintf(file, "color %d %d %d\n", R, G, B);
 }
-void setIconColor(int R, int G, int B)
+void DRAW_SetIconColor(int R, int G, int B)
 {
 	fprintf(file, "iconColor %d %d %d\n", R, G, B);
 }
-void setDrawIconInBackground(int drawIcon)
+void DRAW_SetDrawIconInBackground(int drawIcon)
 {
 	fprintf(file, "drawIcon %d\n", drawIcon);
 }
-void beginDraw()
+void DRAW_BeginDraw()
 {
 	file = fopen("drawData.dat", "w"); 
 }
-void endDraw()
+void DRAW_EndDraw()
 {
 	fclose(file);
 	system("win.exe");

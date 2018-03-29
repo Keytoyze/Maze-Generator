@@ -1,103 +1,105 @@
-#define WIDTH_MAX 150
-#define HEIGHT_MAX 150
 #include "header.h"
 
 int main(void)
 {
-	int c;
-	printf("===========迷宫===========\n\n建议输入长宽大于100以获得最佳体验。\n"); 
-	while(true)
+	int sC;
+	int sHeight;
+	int sWidth;
+	printf("\n=================迷宫=================\n\n  建议输入长宽大于100以获得最佳体验\n"); 
+	while(TRUE)
 	{
-		printf("\n==========================\n");
+		printf("\n======================================\n\n");
 		do {
-			printf("请输入迷宫的宽度 （不超过%d格）：", WIDTH_MAX);
-			scanf("%d", &WIDTH);
-		} while (WIDTH < 2 || WIDTH > WIDTH_MAX);
+			printf("请输入迷宫的宽度 （不超过%d格）：", MAZE_MAX_WIDTH);
+			scanf("%d", &sWidth);
+		} while (sWidth < 2 || sWidth > MAZE_MAX_WIDTH);
 
 		do {
-			printf("请输入迷宫的长度 （不超过%d格）：", HEIGHT_MAX);
-			scanf("%d", &HEIGHT);
-		} while (HEIGHT < 2 || HEIGHT > HEIGHT_MAX);
+			printf("请输入迷宫的长度 （不超过%d格）：", MAZE_MAX_HEIGHT);
+			scanf("%d", &sHeight);
+		} while (sHeight < 2 || sHeight > MAZE_MAX_HEIGHT);
 
-		printf("开始随机生成迷宫...\n");
+		printf("随机生成迷宫...");
 		
-		createMaze(WIDTH, HEIGHT);
-		copyMaze();
-		mark(0,0);
-		findway(0,0);
+		MAZE_CreateNewMaze(sWidth, sHeight);
 		
-		printf("生成成功！正在绘制迷宫界面...\n\n");
-		printResult();
+		printf("    成功！\n生成迷宫路径...");
+		SOLVE_CopyMaze();
+		SOLVE_Mark(0,0);
+		SOLVE_FindWay(0,0);
+		
+		printf("    成功！\n绘制迷宫界面...\n\n");
+		MAIN_PrintResult();
 		printf("请输入接下去的操作：\n[1]继续生成\n[2]结束程序\n");
-		scanf("%d", &c);
-		if (c != 1) {
+		scanf("%d", &sC);
+		if (sC != 1) {
 			break;
 		}
 	}
 }
 
-int random(int min, int max)
+int MAIN_GetRandomNumber(int min, int max)
 {
 	return min + rand() % (max - min + 1);
 }
 
-void printResult()
+void MAIN_PrintResult()
 {
-	int left = 20;
-	int top = 20;
-	int heightCell = 900/HEIGHT;
-	int widthCell = heightCell;
-	char mazeTitle[] = "maze";
+	int sLeft = 20;
+	int sTop = 20;
+	int sHeightCell = 900/MAZE_GetHeight();
+	int sWidthCell = sHeightCell;
+	char acMazeTitle[] = "maze";
 	
-	beginDraw();
-	setTitle(mazeTitle);
-	setColor(200, 200, 0);
-	setWidthAndHeight(left * 2 + widthCell * WIDTH, top * 2 + heightCell * HEIGHT);
-	setDrawIconInBackground(1);
-	setIconColor(0, 255, 255);
+	DRAW_BeginDraw();
+	DRAW_SetTitle(acMazeTitle);
+	DRAW_SetColor(200, 200, 0);
+	DRAW_SetWidthAndHeight(sLeft * 2 + sWidthCell * MAZE_GetWidth(), sTop * 2 + sHeightCell * MAZE_GetHeight());
+	DRAW_SetDrawIconInBackground(TRUE);
+	DRAW_SetIconColor(0, 255, 255);
 	int i, j;
-	for(i = 0; i < HEIGHT; i++) 
+	for(i = 0; i < MAZE_GetHeight(); i++) 
 	{
-		for(j = 0; j < WIDTH; j++)
+		for(j = 0; j < MAZE_GetWidth(); j++)
 		{
-			if (getMazeData(i, j) & UP)
+			if (MAZE_GetMazeData(i, j) & MAZE_UP)
 			{
-				drawLine(left + j * widthCell, top + i * heightCell, left + (j + 1) * widthCell, top + i * heightCell);
+				DRAW_DrawLine(sLeft + j * sWidthCell, sTop + i * sHeightCell, sLeft + (j + 1) * sWidthCell, sTop + i * sHeightCell);
 			}
-			if (getMazeData(i, j) & DOWN)
+			if (MAZE_GetMazeData(i, j) & MAZE_DOWN)
 			{
-				drawLine(left + j * widthCell, top + (i + 1) * heightCell, left + (j + 1) * widthCell, top + (i + 1) * heightCell);
+				DRAW_DrawLine(sLeft + j * sWidthCell, sTop + (i + 1) * sHeightCell, sLeft + (j + 1) * sWidthCell, sTop + (i + 1) * sHeightCell);
 			}
-			if (getMazeData(i, j) & LEFT)
+			if (MAZE_GetMazeData(i, j) & MAZE_LEFT)
 			{
-				drawLine(left + j * widthCell, top + i * heightCell, left + j * widthCell, top + (i + 1) * heightCell);
+				DRAW_DrawLine(sLeft + j * sWidthCell, sTop + i * sHeightCell, sLeft + j * sWidthCell, sTop + (i + 1) * sHeightCell);
 			}
-			if (getMazeData(i, j) & RIGHT)
+			if (MAZE_GetMazeData(i, j) & MAZE_RIGHT)
 			{
-				drawLine(left + (j + 1) * widthCell, top + i * heightCell, left + (j + 1) * widthCell, top + (i + 1) * heightCell);
+				DRAW_DrawLine(sLeft + (j + 1) * sWidthCell, sTop + i * sHeightCell, sLeft + (j + 1) * sWidthCell, sTop + (i + 1) * sHeightCell);
 			}
 		}
 	}
-	setDrawIconInBackground(0); 
-	setColor(255, 0, 0);
-	for(i = 0; i < HEIGHT; i++)
+	DRAW_SetDrawIconInBackground(FALSE); 
+	DRAW_SetColor(255, 0, 0);
+	for(i = 0; i < MAZE_GetHeight(); i++)
 	{
-		for(j = 0; j < WIDTH; j++)
+		for(j = 0; j < MAZE_GetWidth(); j++)
 		{
-			if (getSolvedMazeData(i, j) >=64)
+			if (SOLVE_GetSolvedMazeData(i, j) >=64)
 			{
-				//drawLine(left + j* widthCell, top + (i+0.5) * heightCell, left + (j+0.5) * widthCell, top + (i+1)* heightCell);
-				//drawLine(left + j * widthCell, top + i * heightCell, left + (j+ 1) * widthCell, top + (i+1) * heightCell);
-				//drawLine(left + (j+0.5) * widthCell, top + i * heightCell, left + (j + 1) * widthCell, top + (i+0.5) * heightCell);
-				//drawLine(left + (j+0.75) * widthCell, top + i * heightCell, left + (j + 1) * widthCell, top + (i+0.25) * heightCell);
-				//drawLine(left + (j+0.25) * widthCell, top + i * heightCell, left + (j + 1) * widthCell, top + (i+0.75) * heightCell);
-				//drawLine(left + j* widthCell, top + (i+0.75) * heightCell, left + (j+0.25) * widthCell, top + (i+1)* heightCell);
-				//drawLine(left + j* widthCell, top + (i+0.25) * heightCell, left + (j+0.75) * widthCell, top + (i+1)* heightCell);
-				drawCircle(left+(j+0.5)*heightCell, top+(i+0.5)*widthCell, heightCell/3);
+				//DRAW_DrawLine(sLeft + j* sWidthCell, sTop + (i+0.5) * sHeightCell, sLeft + (j+0.5) * sWidthCell, sTop + (i+1)* sHeightCell);
+				//DRAW_DrawLine(sLeft + j * sWidthCell, sTop + i * sHeightCell, sLeft + (j+ 1) * sWidthCell, sTop + (i+1) * sHeightCell);
+				//DRAW_DrawLine(sLeft + (j+0.5) * sWidthCell, sTop + i * sHeightCell, sLeft + (j + 1) * sWidthCell, sTop + (i+0.5) * sHeightCell);
+				//DRAW_DrawLine(sLeft + (j+0.75) * sWidthCell, sTop + i * sHeightCell, sLeft + (j + 1) * sWidthCell, sTop + (i+0.25) * sHeightCell);
+				//DRAW_DrawLine(sLeft + (j+0.25) * sWidthCell, sTop + i * sHeightCell, sLeft + (j + 1) * sWidthCell, sTop + (i+0.75) * sHeightCell);
+				//DRAW_DrawLine(sLeft + j* sWidthCell, sTop + (i+0.75) * sHeightCell, sLeft + (j+0.25) * sWidthCell, sTop + (i+1)* sHeightCell);
+				//DRAW_DrawLine(sLeft + j* sWidthCell, sTop + (i+0.25) * sHeightCell, sLeft + (j+0.75) * sWidthCell, sTop + (i+1)* sHeightCell);
+				DRAW_DrawCircle(sLeft+(j+0.5)*sHeightCell, sTop+(i+0.5)*sWidthCell, sHeightCell/3);
 			}
 		}
 	}
-	endDraw();
+	DRAW_EndDraw();
 }
 
 
